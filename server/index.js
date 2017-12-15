@@ -33,7 +33,7 @@ app.get('/vehicles/:id/battery', function(req, res){
   process('BatteryRange', req, res)
 })
 
-app.get('/vehicles/:id/engine', function(req, res){
-  console.log("GET /vehicles/:id/engine")
+app.post('/vehicles/:id/engine', function(req, res){
+  console.log("POST /vehicles/:id/engine")
   process('Engine', req, res)
 })

@@ -12,8 +12,12 @@ function requestObject(results, callback){
 
   callback(null, {
     method: 'POST',
-    uri: 'http://gmapi.azurewebsites.net/getVehicleInfoService',
-    body: {"id": results.httpStream.req.params.id, "responseType": "JSON"},
+    uri: 'http://gmapi.azurewebsites.net/actionEngineService',
+    body: {
+      "id": results.httpStream.req.params.id,
+      "command": results.httpStream.req.body.action + "_VEHICLE",
+      "responseType": "JSON"
+    },
     json: true
   })
 
@@ -22,25 +26,24 @@ function requestObject(results, callback){
 async function getHTTPdata(results, callback){
 
   await rp(results.requestObject).then(function(response){
-    if(response.status == 200)
-      callback(null, response.data)
+    if(response.status == 200 && response.actionResult)
+      callback(null, response.actionResult)
     else{
+      console.log(response.actionResult)
       results.httpStream.res.status(404)
-      results.httpStream.res.send("404, invalid ID")
+      results.httpStream.res.send("404, invalid ID or action")
     }
   })
 
 }
 
 function generateResponse(results, callback){
-
-  callback(null,  {
-    vin: results.getHTTPdata.vin.value,
-    color: results.getHTTPdata.color.value,
-    doorCount: results.getHTTPdata.fourDoorSedan.value ? 4 : 2,
-    driveTrain: results.getHTTPdata.driveTrain.value
-  })
-
+  if(results.getHTTPdata.status === "EXECUTED")
+    callback(null,  { "status": "success" })
+  else if(results.getHTTPdata.status === "FAILED")
+    callback(null, { "status": "error" })
+  else
+    results.httpStream.res.send("500. Error with performing actions on vehicle engine")
 }
 
 function sendResponse(results, callback){
