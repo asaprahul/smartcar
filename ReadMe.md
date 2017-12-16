@@ -1,5 +1,7 @@
 # Smartcar API Documentaion
 
+Live version of this API: ``` https://SmartcarIntern.herokuapp.com ```
+
 Contents:
 
 [1. Getting started: Running locally](#getting-started-running-server-locally)
@@ -11,7 +13,7 @@ Contents:
 
 Clone the repo:
 ```
-$ git clone https://github.com/rahulsonwalkar/Gordon
+$ git clone https://github.com/rahulsonwalkar/smartcar
 ```
 
 Install dependencies & start:
