@@ -24,7 +24,7 @@ function process (req, res) {
     sendResponse: ['generateResponse', function(results, callback) { sendResponse(results, callback) }]
   }, function(err, results){
     if(err)
-      console.log(err)
+      log(err)
   })
 
 }
@@ -59,7 +59,7 @@ async function getHTTPdata(results, callback){
     if(response.status == 200 && response.actionResult)
       callback(null, response.actionResult)
     else{
-      console.log(response.actionResult)
+      log(response.actionResult)
       results.httpStream.res.status(404)
       results.httpStream.res.send("404, invalid ID or action")
     }

@@ -22,7 +22,7 @@ function process (req, res) {
     sendResponse: ['generateResponse', function(results, callback) { sendResponse(results, callback) }]
   }, function(err, results){
     if(err)
-      console.log(err)
+      log(err)
   })
 
 }

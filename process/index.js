@@ -22,7 +22,7 @@ module.exports = function(endpoint, req, res){
           Engine(req, res)
           break
       default:
-          console.log(endpoint + ' endpoint does not exist!')
+          log(endpoint + ' endpoint does not exist!')
           res.status(404)
           res.send('404. Endpoint does not exist')
   }

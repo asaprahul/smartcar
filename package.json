@@ -7,12 +7,14 @@
     "async": "^2.6.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "frisby": "^2.0.10",
+    "node-datetime": "^2.0.3",
     "request": "^2.83.0",
     "request-promise": "^4.2.2"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node tests/index.js",
     "start": "node server/index.js"
   },
   "author": "Rahul Sonwalkar",

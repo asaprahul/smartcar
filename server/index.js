@@ -1,39 +1,39 @@
-const rp = require('request-promise')
-const async = require('async')
-const process = require('../process')
+const processor = require('../process')
 const app = require('express')()
 const bodyParser = require('body-parser')
+const log = require('../log')
 
-
-//Express Middleware
+/* Express Middleware */
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.listen(8080)
+app.listen(process.env.PORT || 3000)
 
-console.log("Server listening on PORT 8080")
+log("Server listening on PORT 3000")
+
+/* Listeners for Smartcar API's endpoints */
 
 app.get('/vehicles/:id', function(req, res){
-  console.log("GET /vehicles/:id")
-  process('VehicleInfo', req, res)
+  log("GET /vehicles/:id")
+  processor('VehicleInfo', req, res)    //Process for VehicleInfo endpoint, pass on req & res streams
 })
 
 app.get('/vehicles/:id/doors', function(req, res){
-  console.log("GET /vehicles/:id/doors")
-  process('Security', req, res)
+  log("GET /vehicles/:id/doors")
+  processor('Security', req, res)       //Process for Security endpoint, pass on req & res streams
 })
 
 app.get('/vehicles/:id/fuel', function(req, res){
-  console.log("GET /vehicles/:id/fuel")
-  process('FuelRange', req, res)
+  log("GET /vehicles/:id/fuel")
+  processor('FuelRange', req, res)     // Process for FuelRange endpoint, pass on req & res streams
 })
 
 app.get('/vehicles/:id/battery', function(req, res){
-  console.log("GET /vehicles/:id/battery")
-  process('BatteryRange', req, res)
+  log("GET /vehicles/:id/battery")
+  processor('BatteryRange', req, res)  //Process for BatteryRange endpoint, pass on req & res streams
 })
 
 app.post('/vehicles/:id/engine', function(req, res){
-  console.log("POST /vehicles/:id/engine")
-  process('Engine', req, res)
+  log("POST /vehicles/:id/engine")
+  processor('Engine', req, res)       //Process for Engine Start/Stop endpoint, pass on req & res streams
 })

@@ -23,7 +23,7 @@ function process (req, res) {
     sendResponse: ['generateResponse', function(results, callback) { sendResponse(results, callback) }]
   }, function(err, results){
     if(err)
-      console.log(err)
+      log(err)
   })
 
 }
@@ -73,8 +73,8 @@ function generateResponse(results, callback){
 /* Send response object through the res stream from httpStream */
 function sendResponse(results, callback){
 
-  results.httpStream.res.status(200)
-  results.httpStream.res.send(results.generateResponse)
+  results.httpStream.res.status(200)                      // simply res.status()
+  results.httpStream.res.send(results.generateResponse)   // simply res.send()
   callback(null)
 
 }
