@@ -37,3 +37,8 @@ app.post('/vehicles/:id/engine', function(req, res){
   log("POST /vehicles/:id/engine")
   processor('Engine', req, res)       //Process for Engine Start/Stop endpoint, pass on req & res streams
 })
+
+app.get('/', function(req, res){
+  log("GET /")
+  res.send("Smartcar API implementation. Try all 5 endpoints, documentation here: http://rahul.ru/smartcar")
+})
