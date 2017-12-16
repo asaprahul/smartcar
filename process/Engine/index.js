@@ -1,13 +1,42 @@
 const rp = require('request-promise')
 const async = require('async')
 
-function httpStream(req, res, callback){
+/* Process the request on /engine endpoint */
 
-  callback(null, {req: req, res: res})
+function process (req, res) {
+
+  /* Execute the following functions in order and store their results in the results object
+
+    httpStream -> Store req & res streams from Express for later use
+    requestObject -> According to GM specs, create a request object for GM's API
+    getHTTPdata -> Make request to GM's API and get data
+    generateResponse -> According to Smartcar API specs, generate a response object
+    sendResponse -> Send response object through the res stream from httpStream
+
+    More documentation on async.auto here: https://caolan.github.io/async/docs.html#auto
+  */
+
+  async.auto({
+    httpStream: function(callback) { httpStream(req, res, callback) },
+    requestObject: ['httpStream', function(results, callback) { requestObject(results, callback) }],
+    getHTTPdata: ['requestObject', function(results,callback) { getHTTPdata(results, callback) }],
+    generateResponse: ['getHTTPdata', function(results, callback) { generateResponse(results, callback) }],
+    sendResponse: ['generateResponse', function(results, callback) { sendResponse(results, callback) }]
+  }, function(err, results){
+    if(err)
+      console.log(err)
+  })
 
 }
 
+/* Store req & res streams from Express for later use */
+function httpStream(req, res, callback){
 
+  callback(null, {req: req, res: res})    //req -> results.httpStream.req , res -> results.httpStream.res
+
+}
+
+/*  According to GM specs, create a request object for GM's API */
 function requestObject(results, callback){
 
   callback(null, {
@@ -23,6 +52,7 @@ function requestObject(results, callback){
 
 }
 
+/* Make request to GM's API and get data */
 async function getHTTPdata(results, callback){
 
   await rp(results.requestObject).then(function(response){
@@ -37,6 +67,7 @@ async function getHTTPdata(results, callback){
 
 }
 
+/* According to Smartcar API specs, generate a response object */
 function generateResponse(results, callback){
   if(results.getHTTPdata.status === "EXECUTED")
     callback(null,  { "status": "success" })
@@ -46,27 +77,14 @@ function generateResponse(results, callback){
     results.httpStream.res.send("500. Error with performing actions on vehicle engine")
 }
 
+/* Send response object through the res stream from httpStream */
 function sendResponse(results, callback){
 
-  results.httpStream.res.status(200)
-  results.httpStream.res.send(results.generateResponse)
+  results.httpStream.res.status(200)                         // simply res.status()
+  results.httpStream.res.send(results.generateResponse)      // simply res.send()
   callback(null)
 
 }
 
-function process (req, res) {
-
-  async.auto({
-    httpStream: function(callback) { httpStream(req, res, callback) },
-    requestObject: ['httpStream', function(results, callback) { requestObject(results, callback) }],
-    getHTTPdata: ['requestObject', function(results,callback) { getHTTPdata(results, callback) }],
-    generateResponse: ['getHTTPdata', function(results, callback) { generateResponse(results, callback) }],
-    sendResponse: ['generateResponse', function(results, callback) { sendResponse(results, callback) }]
-  }, function(err, results){
-    if(err)
-      console.log(err)
-  })
-
-}
 
 module.exports = process
