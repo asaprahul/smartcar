@@ -1,6 +1,6 @@
 const rp = require('request-promise')
 const async = require('async')
-
+const log = require('../../log')
 /* Process the request on /engine endpoint */
 
 function process (req, res) {

@@ -1,5 +1,6 @@
 const rp = require('request-promise')
 const async = require('async')
+const log = require('../../log')
 
 function process (req, res) {
 
