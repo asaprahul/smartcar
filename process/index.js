@@ -3,7 +3,7 @@ const Security = require('./Security')
 const FuelRange = require('./FuelRange')
 const BatteryRange = require('./BatteryRange')
 const Engine = require('./Engine')
-const log = require('../../log')
+const log = require('../log')
 
 module.exports = function(endpoint, req, res){
 
